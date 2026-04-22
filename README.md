@@ -1,115 +1,80 @@
-# Embedded Crisis Grid
+# KRISIS | Command Grid
+**Software-first emergency coordination for hospitality and high-traffic environments.**
 
-Software-first emergency coordination for hospitality emergencies.
+Krisis is an intelligent response layer that turns disconnected safety signals into a unified, high-speed command center. Designed for hospitality, high-rise, and industrial environments where every second counts.
 
-This repo contains a backend incident engine plus a detachable test frontend for demoing and validating the system without coupling the UI into the API.
+---
 
-## Repo Contents
+## 🚀 Key Features
 
-- `app/`: Flask backend and incident intelligence engine
-- `frontend/`: detachable browser-based test console
-- `vision/`: optional YOLO-based detector microservice
-- `tools/`: local developer utilities, including a same-origin test gateway
-- `docs/`: overview and API reference
+### 1. Zero-Scroll CCTV Wall
+A high-density surveillance grid optimized for mission-critical monitoring. Forces a 2-row layout to ensure 100% visibility of all 6 camera feeds on any screen size without vertical scrolling.
 
-## What The System Does
+### 2. Remote Command Portal (SOS)
+Smartphone-based emergency triggers. Staff can scan the **Dynamic QR Code** on the dashboard to launch a secure mobile portal. From there, they can trigger Fire, Medical, or Security alerts with 3-tap precision (Floor > Area > Room).
 
-The platform turns disconnected safety signals into one coordinated response layer.
+### 3. AI Vision Pipeline
+Integrated YOLO-based detection engine. Krisis doesn't just watch; it understands. It automatically identifies fire, smoke, and unauthorized entry, escalating incidents from "Warning" to "Confirmed" without human intervention.
 
-Inputs:
+### 4. Smart Notification Routing
+Real-time escalation via **Twilio SMS and Voice**. When an incident is confirmed, Krisis automatically identifies the closest responders on-shift and routes critical instructions to their mobile devices.
 
-- CCTV detections such as `fire`, `smoke`, `abnormal_motion`, `crowd_panic`
-- sensor events such as temperature, gas, and sound anomalies
-- manual staff triggers
+---
 
-Outputs:
+## 🛠 Tech Stack
 
-- active incidents
-- severity classification
-- recommended action
-- event timeline for dashboarding and alerting
+- **Core**: Python 3.12+ (Flask)
+- **Vision**: YOLOv8 / OpenCV
+- **Communication**: Twilio SMS & Voice API
+- **UI**: Vanilla HTML5/CSS3/JS (Ultra-compact layout)
+- **Deployment**: Docker-ready for Hugging Face Spaces / Cloud
 
-## Quick Start
+---
 
-1. Install Python dependencies.
+## 🏃 Quick Start
 
+### 1. Environment Setup
+Create your environment and install dependencies:
 ```bash
 python -m venv .venv
-.venv\Scripts\activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-```
-
-2. Install optional vision dependencies.
-
-```bash
 pip install -r requirements-vision.txt
 ```
 
-3. Start the full local stack with one command.
-
+### 2. Launch Local Stack
+Start the backend, vision bridge, and gateway with one command:
 ```bash
 python run_local.py
 ```
+Access the dashboard at: `http://127.0.0.1:8080`
 
-4. Open the frontend at:
-
-- `http://127.0.0.1:8080`
-
-The local launcher starts the backend, optional vision service, and gateway together so the application is ready on localhost with one command.
-
-## Optional Vision Service
-
-To add video-driven detections, install the extra dependencies:
-
-```bash
-pip install -r requirements-vision.txt
+### 3. Twilio Configuration (Optional)
+To enable real SMS alerts, add your credentials to a `.env` file:
+```env
+TWILIO_ACCOUNT_SID=your_sid
+TWILIO_AUTH_TOKEN=your_token
+TWILIO_PHONE_NUMBER=your_number
 ```
 
-Then run the detector microservice in a third terminal:
+---
 
-```bash
-python -m vision.service
-```
+## 🧬 Demo Workflow for Judges
 
-The gateway proxies this service under `/visionapi`, and the frontend includes a `Vision Bridge` section for configuring and starting the detector.
+1. **Surveillance**: Open the dashboard and view the **CCTV Security Wall**.
+2. **Mobile SOS**: Scan the QR code in the **System Administration** sidebar using your phone.
+3. **Trigger**: Select "FIRE" on your phone, then pinpoint the location (e.g., Basement > Parking).
+4. **Monitor**: Watch the dashboard instantly beep and flash the "Incident Map" button.
+5. **Route**: Click the glowing button to see the incident details and watch as Krisis routes the alert to the designated responders.
 
-Recommended sources:
+---
 
-- `0` for webcam
-- local `.mp4` file path
-- RTSP stream URL
-- direct video stream URL
+## 📂 Repository Structure
 
-Default model path:
+- `app/`: The Krisis Intelligence Engine (Incident logic, routing, and persistence).
+- `frontend/`: The Command Center UI and SOS Portal.
+- `vision/`: YOLOv8 detection service and video analysis bridge.
+- `tools/`: Local development gateway and developer utilities.
 
-- `vision/models/best.pt`
-
-Plain YouTube page URLs are not reliable OpenCV sources. For a YouTube demo, download the video to a local file first or extract a direct stream URL with separate tooling.
-
-## Main API Endpoints
-
-- `GET /health`
-- `POST /ingest/detection`
-- `POST /ingest/sensor`
-- `POST /ingest/manual`
-- `GET /incidents/active`
-- `GET /events`
-
-## Python 3.14 Note
-
-The backend was intentionally rewritten to avoid `pydantic-core` and other native-extension-heavy dependencies so it is easier to install on Python 3.14 without a local C/C++ or Rust toolchain.
-
-## Demo Flow
-
-1. Open the test console.
-2. Switch to `Backend Mode`.
-3. Select a zone.
-4. Run the fire scenario.
-5. Watch incidents escalate from warning to confirmed emergency.
-6. Trigger a manual event to prove fail-safe override.
-
-## More Detail
-
-- Overview: [docs/PROJECT_OVERVIEW.md](C:/Users/jlaak/Documents/Codex/2026-04-20-pitch-embedded-crisis-grid-software-first/docs/PROJECT_OVERVIEW.md)
-- API: [docs/API_REFERENCE.md](C:/Users/jlaak/Documents/Codex/2026-04-20-pitch-embedded-crisis-grid-software-first/docs/API_REFERENCE.md)
-- Frontend notes: [frontend/README.md](C:/Users/jlaak/Documents/Codex/2026-04-20-pitch-embedded-crisis-grid-software-first/frontend/README.md)
+---
+**Developed for the 2026 Crisis Management Hackathon.**
