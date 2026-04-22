@@ -343,8 +343,17 @@ class IncidentEngine:
         existing = self.active_incidents.get(lookup_key)
         now = self._now()
         if existing:
-            # Merge evidence instead of replacing it
-            merged_evidence = list(set(existing.evidence + evidence))
+            # Smart Prefix Merge: Replace tags with the same category prefix (e.g., "fire_hits:")
+            # to prevent evidence list bloat while keeping unique tags.
+            evidence_map = {}
+            for tag in existing.evidence + evidence:
+                if ":" in tag:
+                    prefix = tag.split(":", 1)[0]
+                    evidence_map[prefix] = tag
+                else:
+                    evidence_map[tag] = tag
+            merged_evidence = list(evidence_map.values())
+
             updated = existing.with_updates(
                 type=incident_type,
                 severity=severity,
